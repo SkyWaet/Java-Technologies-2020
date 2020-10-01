@@ -8,27 +8,22 @@ public class Main {
     long sum;
     Long[] cashData;
 
-    public static Long inputSumValue(int level, InputStream stream){
+    public static Long inputSumValue(InputStream stream){
         Scanner in = new Scanner(stream);
         String input;
         System.out.print("Введите желаемую сумму: ");
         input = in.nextLine();
-        long sum;
+        long sum=0;
         try {
             long inputVal=handleInput(input.trim().split("\\s+")[0]);
             sum = inputVal;
             return sum;
+
         } catch (NumberFormatException e) {
-            if(level>50) {
-                System.out.println("Сделано слишком много ошибок. Перезапустите программу");
-                throw (e);
-            }
-            else{
-                System.out.println("Введено некорректное значение. Попробуйте еще раз.");
-                inputSumValue(level+1,stream);
-            }
+            throw new NumberFormatException("Введено некорректное значение для суммы");
+            // System.out.println("Введено некорректное значение. Попробуйте еще раз.");
         }
-        return null;
+
     }
 
     public static Long[] inputNominals( InputStream stream) {
@@ -76,12 +71,21 @@ public class Main {
     public static long exchangeWays(long sum, Long[] cashData, Long[] currentCombination,  int recLevel) {
         if (recLevel == 0) {
             if (sum % cashData[0] == 0) {
-
                 currentCombination[0] = sum / cashData[0];
+                System.out.print("Новая комбинация: ");
                 for (int i = 0; i < cashData.length; i++) {
-                    System.out.print(currentCombination[i] + " of " + cashData[i] + " bills; ");
+                    if(currentCombination[i]>0){
+                        System.out.print(currentCombination[i]);
+                        if(currentCombination[i]%10==1)
+                            System.out.print(" купюра номиналом ");
+                        else if (currentCombination[i]%10 >=2 && currentCombination[i]%10 <=4)
+                            System.out.print(" купюры номиналом ");
+                        else
+                            System.out.print(" купюр номиналом ");
+                        System.out.print(cashData[i]+"; ");
+                    }
                 }
-                System.out.println('\n');
+                System.out.println("\n");
                 return 1;
             }else
                 return 0;
@@ -101,11 +105,10 @@ public class Main {
     public static void main(String[] args) {
 
         Main mainFunc = new Main();
-        long sum = inputSumValue(0,System.in);
+        long sum = inputSumValue(System.in);
         Long[] cashData = inputNominals(System.in);
-
         if (cashData.length == 0 || sum==0)
-            System.out.println("There are no ways to exchange a given sum");
+            System.out.println("Не существует способов размена суммы " + sum + " номиналами "+Arrays.toString(cashData));
         else {
             int size = cashData.length;
             //mainFunc.amOfCombinations = 0;
@@ -115,7 +118,7 @@ public class Main {
             }
 
            long amOfComb = exchangeWays(sum, cashData, currentCombination, size - 1);
-            System.out.println("Finally, there are  " + amOfComb + " ways to exchange a given sum");
+            System.out.println("Итого, существует  " + amOfComb + " способов разменять сумму номиналами "+ Arrays.toString(cashData));
         }
     }
 }
