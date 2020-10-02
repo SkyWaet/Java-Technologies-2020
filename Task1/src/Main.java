@@ -1,27 +1,23 @@
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
-import java.util.stream.Stream;
+
 
 public class Main {
-    long amOfCombinations;
-    long sum;
-    Long[] cashData;
 
     public static Long inputSumValue(InputStream stream){
         Scanner in = new Scanner(stream);
         String input;
         System.out.print("Введите желаемую сумму: ");
         input = in.nextLine();
-        long sum=0;
+        long sum;
         try {
-            long inputVal=handleInput(input.trim().split("\\s+")[0]);
-            sum = inputVal;
+
+            sum =  handleInput(input.trim().split("\\s+")[0]);
             return sum;
 
         } catch (NumberFormatException e) {
             throw new NumberFormatException("Введено некорректное значение для суммы");
-            // System.out.println("Введено некорректное значение. Попробуйте еще раз.");
+
         }
 
     }
@@ -29,14 +25,14 @@ public class Main {
     public static Long[] inputNominals( InputStream stream) {
         SortedSet<Long> cashData = new TreeSet<>();
         Scanner in = new Scanner(stream);
-        String input;
+
         System.out.print("Введите номиналы: ");
         String [] inputArray = in.nextLine().trim().split("\\s+");
         in.close();
-        for (int i=0;i<inputArray.length;i++){
+        for (String s : inputArray) {
             try {
-                long inputVal = handleInput(inputArray[i]);
-                if(inputVal==0)
+                long inputVal = handleInput(s);
+                if (inputVal == 0)
                     System.out.println("0 - недопустимое значение номинала. Оно будет пропущено");
                 else
                     cashData.add(inputVal);
@@ -45,7 +41,7 @@ public class Main {
 
             }
         }
-        //this.cashData = cashData.toArray(new Long[0]);
+
         return cashData.toArray(new Long[0]);
     }
 
@@ -94,7 +90,6 @@ public class Main {
             long thisLevelCombination = 0;
             currentCombination[recLevel] = diffCoeff;
             for (long i = currentCombination[recLevel]; i >= 0; i--) {
-                //  System.out.println("Sum = "+sum);
                 currentCombination[recLevel] = i;
                 thisLevelCombination += exchangeWays((sum - i * cashData[recLevel]),cashData, currentCombination, recLevel - 1);
             }
@@ -104,14 +99,13 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Main mainFunc = new Main();
         long sum = inputSumValue(System.in);
         Long[] cashData = inputNominals(System.in);
         if (cashData.length == 0 || sum==0)
             System.out.println("Не существует способов размена суммы " + sum + " номиналами "+Arrays.toString(cashData));
         else {
             int size = cashData.length;
-            //mainFunc.amOfCombinations = 0;
+
             Long[] currentCombination = new Long[size];
             for (int i = 0; i < size; i++) {
                 currentCombination[i] = (long) 0;

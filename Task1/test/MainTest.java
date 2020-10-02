@@ -18,6 +18,7 @@ class MainTest {
         Long actRes = Main.inputSumValue(stream);
         Assertions.assertEquals(123456,actRes);
     }
+    
     /*
     @ParameterizedTest
     @ValueSource(strings = {"a123456", "12.3456.12","123 456,12","assdf 789111","null"})
@@ -49,7 +50,7 @@ class MainTest {
     @ParameterizedTest
     @ValueSource(strings = {"abcabc", "123q23",".....", "123,23,123"})
     void testHandleInputWithIncorrectStrings(String Strings) {
-       Assertions.assertThrows(NumberFormatException.class, ()->{Main.handleInput(Strings);});
+       Assertions.assertThrows(NumberFormatException.class, ()-> Main.handleInput(Strings));
     }
 
 
@@ -66,7 +67,7 @@ class MainTest {
         for (int i = 0; i < size; i++) {
             currentCombination[i] = (long) 0;
         }
-        Assertions.assertEquals((long)3,Main.exchangeWays(sum,longCashData,currentCombination,size-1));
+        Assertions.assertEquals(3,Main.exchangeWays(sum,longCashData,currentCombination,size-1));
     }
 
 }
