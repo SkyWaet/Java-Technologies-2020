@@ -25,7 +25,6 @@ public class myList<Type> implements java.util.List<Type> {
                 current = current.next;
                 size++;
             }
-
             return size;
         }
     }
@@ -40,7 +39,6 @@ public class myList<Type> implements java.util.List<Type> {
         if (type == null) {
             throw new NullPointerException("Null values are not permitted");
         } else if (this.isEmpty()) {
-
             myListItem<Type> newElem = new myListItem(null, null, type);
             this.head = newElem;
             this.tail = newElem;
