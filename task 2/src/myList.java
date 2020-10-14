@@ -53,9 +53,10 @@ public class myList<Type> implements java.util.List<Type> {
 
     @Override
     public Type remove(int index) {
-        if (index >= this.size())
+
+        if (index >= this.size()) {
             throw new IndexOutOfBoundsException("Index is greater than list size");
-        else if (index < 0) {
+        } else if (index < 0) {
             throw new IndexOutOfBoundsException("Negative indexes are not supported");
         } else if (this.size() == 1) {
             Type data = this.head.data;
@@ -79,6 +80,7 @@ public class myList<Type> implements java.util.List<Type> {
             return current.data;
         }
     }
+
 
     @Override
     public boolean contains(Object o) {
