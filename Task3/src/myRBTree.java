@@ -1,20 +1,20 @@
 import java.util.NoSuchElementException;
 
-public class myRBTree<Type> {
-    myRBItem<Type> root;
+public class myRBTree<keyType, valType> {
+    myRBItem<keyType, valType> root;
 
     public myRBTree() {
         this.root = null;
     }
 
     boolean isEmpty() {
-        return this.root == null ? true : false;
+        return this.root == null;
     }
 
-    public void bigRotation(myRBItem<Type> elem, int dir) {
-        myRBItem<Type> dad = findParent(elem);
-        myRBItem<Type> grandDad = findParent(dad);
-        myRBItem<Type> ggDad = findParent(grandDad);
+    public void bigRotation(myRBItem<keyType, valType> elem, int dir) {
+        myRBItem<keyType, valType> dad = findParent(elem);
+        myRBItem<keyType, valType> grandDad = findParent(dad);
+        myRBItem<keyType, valType> ggDad = findParent(grandDad);
         if (dir == 0) {
             grandDad.left = dad.right;
             dad.right = grandDad;
@@ -35,20 +35,30 @@ public class myRBTree<Type> {
         }
     }
 
-    public void balance(myRBItem<Type> elem) {
-        myRBItem<Type> dad = findParent(elem);
+    public int blackHeight() {
+        int bh = 1;
+        myRBItem<keyType, valType> curr = this.root;
+        while (curr.left != null) {
+            curr = curr.left;
+            if (curr.color == 'b') {
+                bh++;
+            }
+        }
+        return bh + 1;
+    }
+
+    public void balance(myRBItem<keyType, valType> elem) {
+        myRBItem<keyType, valType> dad = findParent(elem);
         if (dad == null) {
             elem.color = 'b';
         } else {
 
-            System.out.println("Dad key = " + dad.key + "; Dad color = " + dad.color);
-            System.out.println("Elem key = " + elem.key + "; Elem color = " + elem.color);
             if (dad.color == 'r') {
-                myRBItem<Type> grandDad = findParent(dad);
+                myRBItem<keyType, valType> grandDad = findParent(dad);
                 if (grandDad == null) {
                     dad.color = 'b';
                 } else {
-                    myRBItem<Type> uncle = grandDad.left == dad ? grandDad.right : grandDad.left;
+                    myRBItem<keyType, valType> uncle = grandDad.left == dad ? grandDad.right : grandDad.left;
                     char color = uncle == null ? 'b' : uncle.color;
                     if (color == 'r') {
                         uncle.color = 'b';
@@ -58,22 +68,22 @@ public class myRBTree<Type> {
                     } else {
 
                         if (elem == dad.right && dad == grandDad.left) {
-                            System.out.println("left dad, right elem");
+
                             elem.left = dad;
                             grandDad.left = elem;
                             dad.right = null;
                             bigRotation(dad, 0);
                         } else if (elem == dad.left && dad == grandDad.right) {
-                            System.out.println("right dad, left elem");
+                           
                             elem.right = dad;
                             grandDad.right = elem;
                             dad.left = null;
                             bigRotation(dad, 1);
                         } else if (dad == grandDad.left) {
-                            System.out.println("left dad, left elem");
+                           
                             bigRotation(elem, 0);
                         } else {
-                            System.out.println("right dad, right elem");
+                         
                             bigRotation(elem, 1);
                         }
                     }
@@ -82,39 +92,44 @@ public class myRBTree<Type> {
         }
     }
 
-    public void add(int key, Type value, myRBItem<Type> root) {
-        myRBItem<Type> newItem = new myRBItem<>(null, null, key, value, 'r');
+    public valType add(keyType key, valType value, myRBItem<keyType, valType> root) {
+        myRBItem<keyType, valType> newItem = new myRBItem<>(null, null, key, value, 'r');
         if (value == null) {
             throw new NullPointerException("Null values are not permitted!");
         } else if (this.isEmpty()) {
             this.root = newItem;
-            this.root.color = 'b';
-            //balance(root);
-        } else if (key < root.key) {
+            this.root.color = 'b';            
+        } else if ( root.compareTo(key) < 0) {
             if (root.left == null) {
                 root.left = newItem;
                 balance(root.left);
+
             } else {
                 this.add(key, value, root.left);
             }
-        } else if (key > root.key) {
+        } else if (root.compareTo(key) > 0) {
             if (root.right == null) {
                 root.right = newItem;
+                //System.out.println("Root key: " + root.key);
                 balance(root.right);
+
             } else {
                 this.add(key, value, root.right);
             }
         } else {
-            throw new IllegalArgumentException("Key is occupied");
+            valType oldVal = root.value;
+            root.value = value;
+            return oldVal;
         }
+        return null;
     }
 
-    public boolean contains(int key) {
-        myRBItem<Type> current = this.root;
+    public boolean contains(keyType key) {
+        myRBItem<keyType, valType> current = this.root;
         while (current != null) {
-            if (key < current.key) {
+            if (current.compareTo(key) < 0) {
                 current = current.left;
-            } else if (key > current.key) {
+            } else if (current.compareTo(key) > 0) {
                 current = current.right;
             } else {
                 return true;
@@ -123,15 +138,15 @@ public class myRBTree<Type> {
         return false;
     }
 
-    public Type get(int key) {
+    public valType get(keyType key) {
         if (!this.contains(key)) {
             throw new NoSuchElementException("No Such Key in the tree");
         } else {
-            myRBItem<Type> current = this.root;
+            myRBItem<keyType, valType> current = this.root;
             while (current != null) {
-                if (key < current.key) {
+                if (current.compareTo(key) < 0) {
                     current = current.left;
-                } else if (key > current.key) {
+                } else if (current.compareTo(key) > 0) {
                     current = current.right;
                 } else {
                     return current.value;
@@ -141,21 +156,22 @@ public class myRBTree<Type> {
         }
     }
 
-    public myRBItem<Type> findMin(myRBItem<Type> root) {
-        myRBItem<Type> current = root;
+    public myRBItem<keyType, valType> findMin(myRBItem<keyType, valType> root) {
+        myRBItem<keyType, valType> current = root;
         while (current.left != null) {
             current = current.left;
         }
         return current;
     }
 
-    public myRBItem<Type> findParent(myRBItem<Type> elem) {
+    public myRBItem<keyType, valType> findParent(myRBItem<keyType, valType> elem) {
         if (elem != this.root) {
-            myRBItem<Type> current = this.root;
+          
+            myRBItem<keyType, valType> current = this.root;
             while (current.left != elem && current.right != elem) {
-                if (elem.key < current.key) {
+                if (elem.compareTo(current.key) > 0) {
                     current = current.left;
-                } else if (elem.key > current.key) {
+                } else if (elem.compareTo(current.key) < 0) {
                     current = current.right;
                 } else {
                     return current;
@@ -166,28 +182,37 @@ public class myRBTree<Type> {
         return null;
     }
 
-    public Type remove(int key) {
+    public valType remove(keyType key) {
         if (!this.contains(key)) {
             throw new NoSuchElementException("No Such Key in the tree");
         } else {
-            myRBItem<Type> current = this.root;
+            myRBItem<keyType, valType> current = this.root;
             while (current != null) {
-                if (key < current.key) {
+                if (current.compareTo(key) < 0) {
                     current = current.left;
-                } else if (key > current.key) {
+                } else if (current.compareTo(key) > 0) {
                     current = current.right;
                 } else {
-                    myRBItem<Type> currParent = findParent(current);
-                    myRBItem<Type> minInLeft = findMin(current.right);
-                    minInLeft.left = current.left;
-                    if (minInLeft != current.right) {
-                        myRBItem<Type> buffParent = findParent(minInLeft);
-                        buffParent.left = minInLeft.right;
-                        minInLeft.right = current.right;
+
+                    myRBItem<keyType, valType> currParent = findParent(current);
+                    myRBItem<keyType, valType> minInRight = findMin(current.right);
+                    minInRight.left = current.left;
+                    if (minInRight != current.right) {
+                        myRBItem<keyType, valType> buffParent = findParent(minInRight);
+                        buffParent.left = minInRight.right;
+                        minInRight.right = current.right;
                     }
                     if (currParent != null) {
-                        currParent.left = minInLeft;
+                        if (current == currParent.left) {
+                            currParent.left = minInRight;
+                        } else {
+                            currParent.right = minInRight;
+                        }
+
+                    } else {
+                        this.root = minInRight;
                     }
+                    balance(minInRight);
                     return current.value;
                 }
             }
@@ -195,10 +220,23 @@ public class myRBTree<Type> {
         }
     }
 
-    public void print(myRBItem<Type> root) {
-        System.out.print(root.value + " " + root.color + "; ");
+    public void print(myRBItem<keyType, valType> root) {
         if (root.left != null) this.print(root.left);
         if (root.right != null) this.print(root.right);
     }
 
+    public int size(myRBItem<keyType, valType> root) {
+        if (this.isEmpty()) {
+            return 0;
+        } else {
+            int size = 1;
+            if (root.left != null) {
+                size += this.size(root.left);
+            }
+            if (root.right != null) {
+                size += this.size(root.right);
+            }
+            return size;
+        }
+    }
 }
