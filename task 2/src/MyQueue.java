@@ -1,15 +1,16 @@
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Queue;
 
-public class myQueue<Type> implements java.util.Queue<Type> {
+public class MyQueue<Type> implements Queue<Type> {
 
-    public myQueue() {
+    public MyQueue() {
         super();
-        this.storage = new myList<>();
+        this.storage = new MyList<>();
     }
 
-    private myList<Type> storage;
+    private MyList<Type> storage;
 
     @Override
     public int size() {
@@ -41,36 +42,36 @@ public class myQueue<Type> implements java.util.Queue<Type> {
 
     @Override
     public Type remove() {
-        if (this.isEmpty())
+        if (this.isEmpty()) {
             throw new NoSuchElementException("The queue is empty. There is nothing to remove");
-        else {
+        } else {
             return this.storage.remove(0);
         }
     }
 
     @Override
     public Type poll() {
-        if (this.isEmpty())
+        if (this.isEmpty()) {
             return null;
-        else {
+        } else {
             return this.storage.remove(0);
         }
     }
 
     @Override
     public Type element() {
-        if (this.isEmpty())
+        if (this.isEmpty()) {
             throw new NoSuchElementException("The queue is empty. There is nothing to retrieve");
-        else {
+        } else {
             return this.storage.get(0);
         }
     }
 
     @Override
     public Type peek() {
-        if (this.isEmpty())
+        if (this.isEmpty()) {
             return null;
-        else {
+        } else {
             return this.storage.get(0);
         }
     }

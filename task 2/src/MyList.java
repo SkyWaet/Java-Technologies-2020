@@ -3,30 +3,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-public class myList<Type> implements java.util.List<Type> {
-    private myListItem<Type> head;
-    private myListItem<Type> tail;
+public class MyList<Type> implements List<Type> {
+    private MyListItem<Type> head;
+    private MyListItem<Type> tail;
+    private int size;
 
-    public myList() {
+    public MyList() {
         tail = null;
         head = null;
+        size = 0;
     }
 
     @Override
     public int size() {
-        if (this.head == null)
-            return 0;
-        else if (this.head.next == null)
-            return 1;
-        else {
-            myListItem<Type> current = this.head;
-            int size = 1;
-            while (current.next != null) {
-                current = current.next;
-                size++;
-            }
-            return size;
-        }
+        return this.size;
     }
 
     @Override
@@ -39,12 +29,14 @@ public class myList<Type> implements java.util.List<Type> {
         if (type == null) {
             throw new NullPointerException("Null values are not permitted");
         } else if (this.isEmpty()) {
-            myListItem<Type> newElem = new myListItem(null, null, type);
+            MyListItem<Type> newElem = new MyListItem(null, null, type);
+            this.size++;
             this.head = newElem;
             this.tail = newElem;
             return true;
         } else {
-            myListItem<Type> newElem = new myListItem(this.tail, null, type);
+            MyListItem<Type> newElem = new MyListItem(this.tail, null, type);
+            this.size++;
             this.tail.next = newElem;
             this.tail = newElem;
             return true;
@@ -53,7 +45,6 @@ public class myList<Type> implements java.util.List<Type> {
 
     @Override
     public Type remove(int index) {
-
         if (index >= this.size()) {
             throw new IndexOutOfBoundsException("Index is greater than list size");
         } else if (index < 0) {
@@ -62,21 +53,24 @@ public class myList<Type> implements java.util.List<Type> {
             Type data = this.head.data;
             this.head = null;
             this.tail = null;
+            this.size--;
             return data;
         } else if (index == 0) {
             Type data = this.head.data;
             this.head.next.prev = null;
             this.head = this.head.next;
+            this.size--;
             return data;
         } else {
             int currInd = 0;
-            myListItem<Type> current = this.head;
+            MyListItem<Type> current = this.head;
             while (currInd < index) {
                 current = current.next;
                 currInd++;
             }
             current.prev.next = current.next;
             current.next.prev = current.prev;
+            this.size--;
             return current.data;
         }
     }
@@ -91,10 +85,11 @@ public class myList<Type> implements java.util.List<Type> {
         } else if (this.size() == 1) {
             return this.head.data == o;
         } else {
-            myListItem<Type> current = this.head;
+            MyListItem<Type> current = this.head;
             while (current.next != null) {
-                if (current.data == o)
+                if (current.data == o) {
                     return true;
+                }
                 current = current.next;
             }
             return false;
@@ -109,7 +104,7 @@ public class myList<Type> implements java.util.List<Type> {
             throw new IndexOutOfBoundsException("Negative index are not supported");
         } else {
             int currInd = 0;
-            myListItem<Type> current = this.head;
+            MyListItem<Type> current = this.head;
             while (currInd < index) {
                 current = current.next;
                 currInd++;
@@ -128,12 +123,13 @@ public class myList<Type> implements java.util.List<Type> {
             throw new NullPointerException("Null elements are not permitted");
         } else {
             int currInd = 0;
-            myListItem<Type> current = this.head;
+            MyListItem<Type> current = this.head;
             while (currInd < index) {
                 current = current.next;
                 currInd++;
             }
-            myListItem<Type> newElem = new myListItem(current.prev, current, element);
+            MyListItem<Type> newElem = new MyListItem(current.prev, current, element);
+            this.size++;
             current.prev.next = newElem;
             current.prev = newElem;
         }

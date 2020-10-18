@@ -5,43 +5,43 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class myQueueTest {
+class MyQueueTest {
     @Test
     void TestIsEmptyForEmptyQueue() {
-        myQueue<Integer> queue = new myQueue<>();
+        MyQueue<Integer> queue = new MyQueue<>();
         Assertions.assertEquals(true, queue.isEmpty());
     }
 
     @Test
     void TestIsEmptyForNotEmptyQueue() {
-        myQueue<Integer> queue = new myQueue<>();
+        MyQueue<Integer> queue = new MyQueue<>();
         queue.add(2);
         Assertions.assertEquals(false, queue.isEmpty());
     }
 
     @Test
     void TestSizeOfEmptyQueue() {
-        myQueue<Integer> queue = new myQueue<>();
+        MyQueue<Integer> queue = new MyQueue<>();
         Assertions.assertEquals(0, queue.size());
     }
 
     @Test
     void TestSizeNotOfEmptyQueue() {
-        myQueue<Integer> queue = new myQueue<>();
+        MyQueue<Integer> queue = new MyQueue<>();
         queue.add(2);
         Assertions.assertEquals(1, queue.size());
     }
 
     @Test
     void TestAddToTheQueue() {
-        myQueue<Integer> queue = new myQueue<>();
+        MyQueue<Integer> queue = new MyQueue<>();
         queue.add(2);
         Assertions.assertEquals(1, queue.size());
     }
 
     @Test
     void TestAddNullToTheQueue() {
-        myQueue<Integer> queue = new myQueue<>();
+        MyQueue<Integer> queue = new MyQueue<>();
         Assertions.assertThrows(NullPointerException.class, () -> {
             queue.add(null);
         });
@@ -49,7 +49,7 @@ class myQueueTest {
 
     @Test
     void TestRemoveFromNotEmptyQueue() {
-        myQueue<Integer> queue = new myQueue<>();
+        MyQueue<Integer> queue = new MyQueue<>();
         queue.add(1);
         queue.add(2);
         Assertions.assertEquals(1, queue.remove());
@@ -58,7 +58,7 @@ class myQueueTest {
 
     @Test
     void TestRemoveFromEmptyQueue() {
-        myQueue<Integer> queue = new myQueue<>();
+        MyQueue<Integer> queue = new MyQueue<>();
         Assertions.assertThrows(NoSuchElementException.class, () -> {
             queue.remove();
         });
@@ -66,7 +66,7 @@ class myQueueTest {
 
     @Test
     void TestPollFromNotEmptyQueue() {
-        myQueue<Integer> queue = new myQueue<>();
+        MyQueue<Integer> queue = new MyQueue<>();
         queue.add(1);
         queue.add(2);
         Assertions.assertEquals(1, queue.poll());
@@ -75,14 +75,14 @@ class myQueueTest {
 
     @Test
     void TestPollFromEmptyQueue() {
-        myQueue<Integer> queue = new myQueue<>();
+        MyQueue<Integer> queue = new MyQueue<>();
         Assertions.assertEquals(null, queue.poll());
 
     }
 
     @Test
     void TestElementFromNotEmptyQueue() {
-        myQueue<Integer> queue = new myQueue<>();
+        MyQueue<Integer> queue = new MyQueue<>();
         queue.add(1);
         queue.add(2);
         Assertions.assertEquals(1, queue.element());
@@ -91,7 +91,7 @@ class myQueueTest {
 
     @Test
     void TestElementFromEmptyQueue() {
-        myQueue<Integer> queue = new myQueue<>();
+        MyQueue<Integer> queue = new MyQueue<>();
         Assertions.assertThrows(NoSuchElementException.class, () -> {
             queue.element();
         });
@@ -99,7 +99,7 @@ class myQueueTest {
 
     @Test
     void TestPeekFromNotEmptyQueue() {
-        myQueue<Integer> queue = new myQueue<>();
+        MyQueue<Integer> queue = new MyQueue<>();
         queue.add(1);
         queue.add(2);
         Assertions.assertEquals(1, queue.peek());
@@ -108,7 +108,7 @@ class myQueueTest {
 
     @Test
     void TestPeekFromEmptyQueue() {
-        myQueue<Integer> queue = new myQueue<>();
+        MyQueue<Integer> queue = new MyQueue<>();
         Assertions.assertEquals(null, queue.peek());
 
     }

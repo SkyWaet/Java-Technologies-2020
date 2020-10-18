@@ -4,28 +4,28 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class myListTest {
+class MyListTest {
     @Test
     void TestIsEmptyForEmptyList() {
-        myList<Integer> list = new myList<>();
+        MyList<Integer> list = new MyList<>();
         Assertions.assertEquals(true, list.isEmpty());
     }
 
     @Test
     void isEmptyForNotEmptyList() {
-        myList<Integer> list = new myList<>();
+        MyList<Integer> list = new MyList<>();
         Assertions.assertEquals(false, list.isEmpty());
     }
 
     @Test
     void TestSizeOfForEmptyList() {
-        myList<Integer> list = new myList<>();
+        MyList<Integer> list = new MyList<>();
         Assertions.assertEquals(0, list.size());
     }
 
     @Test
     void TestSizeOfForNotEmptyList() {
-        myList<Integer> list = new myList<>();
+        MyList<Integer> list = new MyList<>();
         list.add(1);
         list.add(1);
         list.add(1);
@@ -34,7 +34,7 @@ class myListTest {
 
     @Test
     void TestAddElemToTheEndToEmptyList() {
-        myList<Integer> list = new myList<>();
+        MyList<Integer> list = new MyList<>();
         list.add(1);
         Assertions.assertEquals(list.get(0), 1);
         Assertions.assertEquals(1, list.size());
@@ -42,7 +42,7 @@ class myListTest {
 
     @Test
     void TestAddElemToTheEndToNotEmptyList() {
-        myList<Integer> list = new myList<>();
+        MyList<Integer> list = new MyList<>();
         list.add(1);
         list.add(1);
         list.add(2);
@@ -52,7 +52,7 @@ class myListTest {
 
     @Test
     void TestAddElemToTheEndAddNull() {
-        myList<Integer> list = new myList<>();
+        MyList<Integer> list = new MyList<>();
         Assertions.assertThrows(NullPointerException.class, () -> {
             list.add(null);
         });
@@ -60,7 +60,7 @@ class myListTest {
 
     @Test
     void TestAddElemByIndexToEmptyList() {
-        myList<Integer> list = new myList<>();
+        MyList<Integer> list = new MyList<>();
         list.add(0, 1);
         Assertions.assertEquals(list.get(0), 1);
         Assertions.assertEquals(1, list.size());
@@ -68,7 +68,7 @@ class myListTest {
 
     @Test
     void TestAddElemByIndexToNotEmptyList() {
-        myList<Integer> list = new myList<>();
+        MyList<Integer> list = new MyList<>();
         list.add(0, 1);
         list.add(1, 2);
         list.add(2, 3);
@@ -80,7 +80,7 @@ class myListTest {
 
     @Test
     void TestAddElemByIndexWithNegativeIndex() {
-        myList<Integer> list = new myList<>();
+        MyList<Integer> list = new MyList<>();
         list.add(0, 1);
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
             list.add(-1, 1);
@@ -89,7 +89,7 @@ class myListTest {
 
     @Test
     void TestAddElemByIndexWithTooLargeIndex() {
-        myList<Integer> list = new myList<>();
+        MyList<Integer> list = new MyList<>();
         list.add(0, 1);
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
             list.add(3, 1);
@@ -98,7 +98,7 @@ class myListTest {
 
     @Test
     void TestAddElemByIndexAddNull() {
-        myList<Integer> list = new myList<>();
+        MyList<Integer> list = new MyList<>();
         Assertions.assertThrows(NullPointerException.class, () -> {
             list.add(0, null);
         });
@@ -107,7 +107,7 @@ class myListTest {
 
     @Test
     void TestRemoveElemWithNegativeIndex() {
-        myList<Integer> list = new myList<>();
+        MyList<Integer> list = new MyList<>();
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
             list.remove(-1);
         });
@@ -115,7 +115,7 @@ class myListTest {
 
     @Test
     void TestRemoveElemWithTooLargeIndex() {
-        myList<Integer> list = new myList<>();
+        MyList<Integer> list = new MyList<>();
         list.add(1);
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
             list.remove(5);
@@ -124,7 +124,7 @@ class myListTest {
 
     @Test
     void TestRemoveElemFromListWithOneElem() {
-        myList<Integer> list = new myList<>();
+        MyList<Integer> list = new MyList<>();
         list.add(1);
         Assertions.assertEquals(list.remove(0), 1);
         Assertions.assertEquals(true, list.isEmpty());
@@ -132,7 +132,7 @@ class myListTest {
 
     @Test
     void TestRemoveElemFromListWithThreeElems() {
-        myList<Integer> list = new myList<>();
+        MyList<Integer> list = new MyList<>();
         list.add(1);
         list.add(2);
         list.add(3);
@@ -142,7 +142,7 @@ class myListTest {
 
     @Test
     void TestGetElementFromListCorrect() {
-        myList<Integer> list = new myList<>();
+        MyList<Integer> list = new MyList<>();
         list.add(1);
         list.add(2);
         list.add(3);
@@ -151,7 +151,7 @@ class myListTest {
 
     @Test
     void TestGetElementWithTooLargeIndex() {
-        myList<Integer> list = new myList<>();
+        MyList<Integer> list = new MyList<>();
         list.add(1);
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
             list.get(2);
@@ -159,7 +159,7 @@ class myListTest {
     }
 
     void TestGetElementWithNegativeIndex() {
-        myList<Integer> list = new myList<>();
+        MyList<Integer> list = new MyList<>();
         list.add(1);
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
             list.get(-1);
