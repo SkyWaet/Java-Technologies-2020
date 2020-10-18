@@ -1,3 +1,5 @@
+package com.skywaet.listandqueue;
+
 public class MyListItem<Type> {
     MyListItem<Type> prev;
     MyListItem<Type> next;

@@ -1,8 +1,6 @@
+import com.skywaet.listandqueue.MyList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class MyListTest {
     @Test
