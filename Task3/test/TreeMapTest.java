@@ -1,20 +1,19 @@
+import com.skywaet.treemap.TreeMap;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class myTreeMapTest {
+class TreeMapTest {
 
     @Test
     void TestPutToEmptyTreeMap() {
-        myTreeMap mTm = new myTreeMap();
+        TreeMap mTm = new TreeMap();
         mTm.put(1, 2);
         Assertions.assertTrue(mTm.containsKey(1));
     }
 
     @Test
     void TestPutToNotEmptyTreeMap() {
-        myTreeMap mTm = new myTreeMap();
+        TreeMap mTm = new TreeMap();
         mTm.put(1, 2);
         mTm.put(13, 2);
         mTm.put(12, 2);
@@ -23,7 +22,7 @@ class myTreeMapTest {
 
     @Test
     void TestGetElem() {
-        myTreeMap mTm = new myTreeMap();
+        TreeMap mTm = new TreeMap();
         mTm.put(1, 2);
         mTm.put(13, 2);
         mTm.put(12, 2);
@@ -32,7 +31,7 @@ class myTreeMapTest {
 
     @Test
     void TestContainsElem() {
-        myTreeMap mTm = new myTreeMap();
+        TreeMap mTm = new TreeMap();
         mTm.put(1, 2);
         mTm.put(13, 2);
         mTm.put(12, 2);
@@ -41,13 +40,13 @@ class myTreeMapTest {
 
     @Test
     void TestIsEmptyWithEmptyMap() {
-        myTreeMap mTm = new myTreeMap();
+        TreeMap mTm = new TreeMap();
         Assertions.assertTrue(mTm.isEmpty());
     }
 
     @Test
     void TestIsEmptyWithNotEmptyMap() {
-        myTreeMap mTm = new myTreeMap();
+        TreeMap mTm = new TreeMap();
         mTm.put(12, 2);
         Assertions.assertFalse(mTm.isEmpty());
     }

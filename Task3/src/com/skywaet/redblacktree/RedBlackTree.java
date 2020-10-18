@@ -1,20 +1,45 @@
+package com.skywaet.redblacktree;
+
 import java.util.NoSuchElementException;
 
-public class myRBTree<keyType, valType> {
-    myRBItem<keyType, valType> root;
+/**
+ * My realization of Red Black Tree.
+ */
 
-    public myRBTree() {
+public class RedBlackTree<keyType, valType> {
+    public RedBlackTreeItem<keyType, valType> root;
+
+    public RedBlackTree() {
         this.root = null;
     }
 
-    boolean isEmpty() {
+    public boolean isEmpty() {
         return this.root == null;
     }
 
-    public void bigRotation(myRBItem<keyType, valType> elem, int dir) {
-        myRBItem<keyType, valType> dad = findParent(elem);
-        myRBItem<keyType, valType> grandDad = findParent(dad);
-        myRBItem<keyType, valType> ggDad = findParent(grandDad);
+    /**
+     * Unique method for Red Black Tree. It is used for black height computation
+     */
+    public int blackHeight() {
+        int bh = 1;
+        RedBlackTreeItem<keyType, valType> curr = this.root;
+        while (curr.left != null) {
+            curr = curr.left;
+            if (curr.color) {
+                bh++;
+            }
+        }
+        return bh + 1;
+    }
+    /** blackHeight end */
+
+    /**
+     * These methods are used for balancing the tree.
+     */
+    void bigRotation(RedBlackTreeItem<keyType, valType> elem, int dir) {
+        RedBlackTreeItem<keyType, valType> dad = findParent(elem);
+        RedBlackTreeItem<keyType, valType> grandDad = findParent(dad);
+        RedBlackTreeItem<keyType, valType> ggDad = findParent(grandDad);
         if (dir == 0) {
             grandDad.left = dad.right;
             dad.right = grandDad;
@@ -22,8 +47,8 @@ public class myRBTree<keyType, valType> {
             grandDad.right = dad.left;
             dad.left = grandDad;
         }
-        dad.color = 'b';
-        grandDad.color = 'r';
+        dad.color = true;
+        grandDad.color = false;
         if (ggDad == null) {
             this.root = dad;
         } else {
@@ -35,35 +60,23 @@ public class myRBTree<keyType, valType> {
         }
     }
 
-    public int blackHeight() {
-        int bh = 1;
-        myRBItem<keyType, valType> curr = this.root;
-        while (curr.left != null) {
-            curr = curr.left;
-            if (curr.color == 'b') {
-                bh++;
-            }
-        }
-        return bh + 1;
-    }
-
-    public void balance(myRBItem<keyType, valType> elem) {
-        myRBItem<keyType, valType> dad = findParent(elem);
+    void balance(RedBlackTreeItem<keyType, valType> elem) {
+        RedBlackTreeItem<keyType, valType> dad = findParent(elem);
         if (dad == null) {
-            elem.color = 'b';
+            elem.color = true;
         } else {
 
-            if (dad.color == 'r') {
-                myRBItem<keyType, valType> grandDad = findParent(dad);
+            if (!dad.color) {
+                RedBlackTreeItem<keyType, valType> grandDad = findParent(dad);
                 if (grandDad == null) {
-                    dad.color = 'b';
+                    dad.color = true;
                 } else {
-                    myRBItem<keyType, valType> uncle = grandDad.left == dad ? grandDad.right : grandDad.left;
-                    char color = uncle == null ? 'b' : uncle.color;
-                    if (color == 'r') {
-                        uncle.color = 'b';
-                        dad.color = 'b';
-                        grandDad.color = 'r';
+                    RedBlackTreeItem<keyType, valType> uncle = grandDad.left == dad ? grandDad.right : grandDad.left;
+                    boolean color = uncle == null ? true : uncle.color;
+                    if (!color) {
+                        uncle.color = true;
+                        dad.color = true;
+                        grandDad.color = false;
                         this.balance(grandDad);
                     } else {
 
@@ -74,16 +87,16 @@ public class myRBTree<keyType, valType> {
                             dad.right = null;
                             bigRotation(dad, 0);
                         } else if (elem == dad.left && dad == grandDad.right) {
-                           
+
                             elem.right = dad;
                             grandDad.right = elem;
                             dad.left = null;
                             bigRotation(dad, 1);
                         } else if (dad == grandDad.left) {
-                           
+
                             bigRotation(elem, 0);
                         } else {
-                         
+
                             bigRotation(elem, 1);
                         }
                     }
@@ -92,14 +105,18 @@ public class myRBTree<keyType, valType> {
         }
     }
 
-    public valType add(keyType key, valType value, myRBItem<keyType, valType> root) {
-        myRBItem<keyType, valType> newItem = new myRBItem<>(null, null, key, value, 'r');
+    /**
+     * End of balance section
+     */
+
+    public valType add(keyType key, valType value, RedBlackTreeItem<keyType, valType> root) {
+        RedBlackTreeItem<keyType, valType> newItem = new RedBlackTreeItem<>(null, null, key, value, false);
         if (value == null) {
             throw new NullPointerException("Null values are not permitted!");
         } else if (this.isEmpty()) {
             this.root = newItem;
-            this.root.color = 'b';            
-        } else if ( root.compareTo(key) < 0) {
+            this.root.color = true;
+        } else if (root.compareTo(key) < 0) {
             if (root.left == null) {
                 root.left = newItem;
                 balance(root.left);
@@ -125,7 +142,7 @@ public class myRBTree<keyType, valType> {
     }
 
     public boolean contains(keyType key) {
-        myRBItem<keyType, valType> current = this.root;
+        RedBlackTreeItem<keyType, valType> current = this.root;
         while (current != null) {
             if (current.compareTo(key) < 0) {
                 current = current.left;
@@ -142,7 +159,7 @@ public class myRBTree<keyType, valType> {
         if (!this.contains(key)) {
             throw new NoSuchElementException("No Such Key in the tree");
         } else {
-            myRBItem<keyType, valType> current = this.root;
+            RedBlackTreeItem<keyType, valType> current = this.root;
             while (current != null) {
                 if (current.compareTo(key) < 0) {
                     current = current.left;
@@ -156,18 +173,18 @@ public class myRBTree<keyType, valType> {
         }
     }
 
-    public myRBItem<keyType, valType> findMin(myRBItem<keyType, valType> root) {
-        myRBItem<keyType, valType> current = root;
+    public RedBlackTreeItem<keyType, valType> findMin(RedBlackTreeItem<keyType, valType> root) {
+        RedBlackTreeItem<keyType, valType> current = root;
         while (current.left != null) {
             current = current.left;
         }
         return current;
     }
 
-    public myRBItem<keyType, valType> findParent(myRBItem<keyType, valType> elem) {
+    public RedBlackTreeItem<keyType, valType> findParent(RedBlackTreeItem<keyType, valType> elem) {
         if (elem != this.root) {
-          
-            myRBItem<keyType, valType> current = this.root;
+
+            RedBlackTreeItem<keyType, valType> current = this.root;
             while (current.left != elem && current.right != elem) {
                 if (elem.compareTo(current.key) > 0) {
                     current = current.left;
@@ -186,7 +203,7 @@ public class myRBTree<keyType, valType> {
         if (!this.contains(key)) {
             throw new NoSuchElementException("No Such Key in the tree");
         } else {
-            myRBItem<keyType, valType> current = this.root;
+            RedBlackTreeItem<keyType, valType> current = this.root;
             while (current != null) {
                 if (current.compareTo(key) < 0) {
                     current = current.left;
@@ -194,11 +211,11 @@ public class myRBTree<keyType, valType> {
                     current = current.right;
                 } else {
 
-                    myRBItem<keyType, valType> currParent = findParent(current);
-                    myRBItem<keyType, valType> minInRight = findMin(current.right);
+                    RedBlackTreeItem<keyType, valType> currParent = findParent(current);
+                    RedBlackTreeItem<keyType, valType> minInRight = findMin(current.right);
                     minInRight.left = current.left;
                     if (minInRight != current.right) {
-                        myRBItem<keyType, valType> buffParent = findParent(minInRight);
+                        RedBlackTreeItem<keyType, valType> buffParent = findParent(minInRight);
                         buffParent.left = minInRight.right;
                         minInRight.right = current.right;
                     }
@@ -220,12 +237,13 @@ public class myRBTree<keyType, valType> {
         }
     }
 
-    public void print(myRBItem<keyType, valType> root) {
+    public void print(RedBlackTreeItem<keyType, valType> root) {
         if (root.left != null) this.print(root.left);
+        System.out.print(root.value + " ");
         if (root.right != null) this.print(root.right);
     }
 
-    public int size(myRBItem<keyType, valType> root) {
+    public int size(RedBlackTreeItem<keyType, valType> root) {
         if (this.isEmpty()) {
             return 0;
         } else {

@@ -1,12 +1,17 @@
+package com.skywaet.treemap;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import com.skywaet.redblacktree.RedBlackTree;
 
-public class myTreeMap implements Map {
-    myRBTree<Object, Object> container;
+/** Implementation of Map interface, based on RedBlackTree class. */
 
-    public myTreeMap() {
-        this.container = new myRBTree();
+public class TreeMap implements Map {
+    public RedBlackTree<Object, Object> container;
+
+    public TreeMap() {
+        this.container = new RedBlackTree();
     }
 
     @Override

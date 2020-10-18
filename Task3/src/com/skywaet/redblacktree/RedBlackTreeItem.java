@@ -1,13 +1,19 @@
+package com.skywaet.redblacktree;
+
 import java.util.Comparator;
 
-public class myRBItem<keyType, valType> {
-    public char color;
-    public myRBItem<keyType, valType> left;
-    public myRBItem<keyType, valType> right;
+/**
+ * Defines the structure of Red Black Tree element.
+ */
+
+public class RedBlackTreeItem<keyType, valType> {
+    public boolean color;
+    public RedBlackTreeItem<keyType, valType> left;
+    public RedBlackTreeItem<keyType, valType> right;
     public keyType key;
     public valType value;
 
-    public myRBItem(myRBItem<keyType, valType> left, myRBItem<keyType, valType> right, keyType key, valType value, char color) {
+    public RedBlackTreeItem(RedBlackTreeItem<keyType, valType> left, RedBlackTreeItem<keyType, valType> right, keyType key, valType value, boolean color) {
         this.left = left;
         this.right = right;
         this.key = key;

@@ -1,13 +1,12 @@
+import com.skywaet.redblacktree.RedBlackTree;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class myRBTreeTest {
+class RedBlackTreeTest {
 
     @Test
     void TestAddElemToEmptyTree() {
-        myRBTree<Integer, Integer> rbTree = new myRBTree<>();
+        RedBlackTree<Integer, Integer> rbTree = new RedBlackTree<>();
         rbTree.add(10, 1, rbTree.root);
         boolean contains = rbTree.contains(10);
         int elem = rbTree.get(10);
@@ -17,7 +16,7 @@ class myRBTreeTest {
 
     @Test
     void TestAddElemToNotEmptyTree() {
-        myRBTree<Integer, Integer> rbTree = new myRBTree<>();
+        RedBlackTree<Integer, Integer> rbTree = new RedBlackTree<>();
         rbTree.add(10, 1, rbTree.root);
         rbTree.add(11, 2, rbTree.root);
         boolean contains = rbTree.contains(11);
@@ -28,7 +27,7 @@ class myRBTreeTest {
 
     @Test
     void TestRemoveElem() {
-        myRBTree<Integer, Integer> rbTree = new myRBTree<>();
+        RedBlackTree<Integer, Integer> rbTree = new RedBlackTree<>();
         rbTree.add(8, 8, rbTree.root);
         rbTree.add(3, 3, rbTree.root);
         rbTree.add(10, 1, rbTree.root);
@@ -39,7 +38,7 @@ class myRBTreeTest {
 
     @Test
     void TestContainsElem() {
-        myRBTree<Integer, Integer> rbTree = new myRBTree<>();
+        RedBlackTree<Integer, Integer> rbTree = new RedBlackTree<>();
         rbTree.add(8, 8, rbTree.root);
         rbTree.add(3, 3, rbTree.root);
         rbTree.add(10, 1, rbTree.root);
@@ -50,7 +49,7 @@ class myRBTreeTest {
 
     @Test
     void TestGetElem() {
-        myRBTree<Integer, Integer> rbTree = new myRBTree<>();
+        RedBlackTree<Integer, Integer> rbTree = new RedBlackTree<>();
         rbTree.add(8, 8, rbTree.root);
         rbTree.add(3, 3, rbTree.root);
         rbTree.add(10, 1, rbTree.root);
