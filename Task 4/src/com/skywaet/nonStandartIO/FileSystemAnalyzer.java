@@ -17,7 +17,7 @@ public class FileSystemAnalyzer {
             if (dir.exists()) {
                 this.dir = dir;
             } else {
-                throw new NoSuchFileException("Directory '" + dir + "' not found");
+                throw new NoSuchFileException("Directory '" + dir + "' not found. Current working directory is "+System.getProperty("user.dir"));
             }
         } catch (NoSuchFileException e) {
             throw e;
@@ -30,7 +30,7 @@ public class FileSystemAnalyzer {
             if (outputFile.exists()) {
                 this.outputFile = outputFile;
             } else {
-                throw new NoSuchFileException("File '" + outputFile + "' not found");
+                throw new NoSuchFileException("File '" + outputFile + "' not found. Current working directory is "+System.getProperty("user.dir"));
             }
         } catch (NoSuchFileException e) {
             throw e;
@@ -50,17 +50,23 @@ public class FileSystemAnalyzer {
     public void directoryAnalyser(File dir) {
         if (dir.isDirectory()) {
             try {
-                for (File item : dir.listFiles()) {
-                    if (item.isDirectory()) {
-                        FileWriter outStream = new FileWriter(this.outputFile, true);
-                        outStream.write("\uD83D\uDCC1 " + item.getName() + '\n');
-                        outStream.close();
-                        directoryAnalyser(item);
+                if (dir.listFiles().length == 0) {
+                    FileWriter outStream = new FileWriter(this.outputFile, true);
+                    outStream.write("The directory " + dir + " is empty\n");
+                    outStream.close();
+                } else {
+                    for (File item : dir.listFiles()) {
+                        if (item.isDirectory()) {
+                            FileWriter outStream = new FileWriter(this.outputFile, true);
+                            outStream.write("\uD83D\uDCC1 " + item.getName() + '\n');
+                            outStream.close();
+                            directoryAnalyser(item);
 
-                    } else {
-                        FileWriter outStream = new FileWriter(this.outputFile, true);
-                        outStream.write(item.getName() + '\n');
-                        outStream.close();
+                        } else {
+                            FileWriter outStream = new FileWriter(this.outputFile, true);
+                            outStream.write(item.getName() + '\n');
+                            outStream.close();
+                        }
                     }
                 }
             } catch (IOException e) {
