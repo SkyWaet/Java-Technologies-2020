@@ -12,18 +12,39 @@ public class FileSystemAnalyzer {
     File outputFile;
 
     public FileSystemAnalyzer(String dirPath, String FilePath) throws NoSuchFileException {
-        File dir = new File(dirPath);
-        if (dir.exists()) {
-            this.dir = dir;
-        } else {
-            throw new NoSuchFileException("Directory '"+dir+ "' not found");
+        try {
+            File dir = new File(dirPath).getCanonicalFile();
+            if (dir.exists()) {
+                this.dir = dir;
+            } else {
+                throw new NoSuchFileException("Directory '" + dir + "' not found");
+            }
+        } catch (NoSuchFileException e) {
+            throw e;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        File outputFile = new File(FilePath);
-        if (outputFile.exists()) {
-            this.outputFile = outputFile;
-        } else {
-            throw new NoSuchFileException("File '"+outputFile+ "' not found");
+
+        try {
+            File outputFile = new File(FilePath).getCanonicalFile();
+            if (outputFile.exists()) {
+                this.outputFile = outputFile;
+            } else {
+                throw new NoSuchFileException("File '" + outputFile + "' not found");
+            }
+        } catch (NoSuchFileException e) {
+            throw e;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
+
+    public File getDir() {
+        return this.dir;
+    }
+
+    public File getOutputFile() {
+        return this.outputFile;
     }
 
     public void directoryAnalyser(File dir) {
@@ -49,17 +70,7 @@ public class FileSystemAnalyzer {
     }
 
     public static void main(String @NotNull [] args) throws IOException {
-        File dir = new File(args[0]);//.getCanonicalFile();
-        System.out.println(args[0]);
-        File outputFile = new File(args[1]).getCanonicalFile();
-
-/*        if (outputFile.exists()) {
-            outputFile.delete();
-        }
-        if (dir.exists()) {
-            directoryAnalyser(dir, outputFile);
-        } else {
-            System.out.println("Directory not found");
-        }*/
+        FileSystemAnalyzer fsAn = new FileSystemAnalyzer(args[0], args[1]);
+        fsAn.directoryAnalyser(fsAn.dir);
     }
 }
