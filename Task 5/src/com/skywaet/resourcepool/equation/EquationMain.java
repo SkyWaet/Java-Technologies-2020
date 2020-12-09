@@ -22,7 +22,7 @@ public class EquationMain {
         }
 
         ResourcePool<Thread> threadPool = new ResourcePool<>(new ThreadFactory(), maxWaitingTime, poolSize);
-        ResourcePool<File> filePool = new ResourcePool<>(new FileFactory("D:\\учеба\\third year\\JavaTechnologies\\Task 5"), maxWaitingTime);
+        ResourcePool<File> filePool = new ResourcePool<>(new FileFactory("logs"), maxWaitingTime);
 
         for (int i = 0; i < poolSize; i++) {
             start = (i * 10000) / poolSize;

@@ -34,7 +34,7 @@ public class EquationSolver implements Runnable {
 
             for (int i = start; i < end; i++) {
                 String roots = findRoots(coefficientA[i], coefficientB[i], coefficientC[i]);
-                logWriter.write(roots);
+                logWriter.write(String.format("Equation: %f x^2 + %f x + %f = 0. Roots: %s",coefficientA[i],coefficientB[i],coefficientC[i],roots));
             }
             logWriter.close();
             filePool.releaseResource(logFile);

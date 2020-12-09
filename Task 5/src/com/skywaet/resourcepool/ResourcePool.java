@@ -5,13 +5,12 @@ import com.skywaet.resourcepool.factories.ResourceFactory;
 import java.util.concurrent.*;
 
 public class ResourcePool<T> {
-    private BlockingQueue<Resource<Long, T>> pool;
+    private LinkedBlockingQueue<Resource<Long, T>> pool;
     private LinkedBlockingQueue<Resource<Long, T>> activatedResources;
     private final ResourceFactory<T> resourceFactory;
     private final ExecutorService executor;
     private final long maxWaitingTime;
     private boolean isTerminated;
-    private final Semaphore poolSize;
 
     public ResourcePool(ResourceFactory<T> resourceFactory, long maxWaitingTime, int size) {
         this.resourceFactory = resourceFactory;
@@ -21,7 +20,6 @@ public class ResourcePool<T> {
         this.activatedResources = new LinkedBlockingQueue<>();
         this.executor = Executors.newCachedThreadPool();
 
-        this.poolSize = new Semaphore(size);
         this.pool = new LinkedBlockingQueue<>(size);
         for (var i = 0; i < size; i++) {
             this.pool.offer(createNewResource());
@@ -29,7 +27,7 @@ public class ResourcePool<T> {
     }
 
     public ResourcePool(ResourceFactory<T> resourceFactory, long maxWaitingTime) {
-        this(resourceFactory,maxWaitingTime,Runtime.getRuntime().availableProcessors());
+        this(resourceFactory, maxWaitingTime, Runtime.getRuntime().availableProcessors());
     }
 
     public Resource<Long, T> createNewResource() {
@@ -45,7 +43,6 @@ public class ResourcePool<T> {
             throw new IllegalStateException("Unable to add new resource: the pool is terminated.");
         }
         try {
-            poolSize.acquire();
             Resource<Long, T> requestedResource = this.pool.take();
             if (requestedResource.isAlive(this.maxWaitingTime)) {
                 this.activatedResources.offer(requestedResource);
@@ -68,7 +65,6 @@ public class ResourcePool<T> {
             this.activatedResources.remove(resourceValue);
             Resource<Long, T> releasedResource = new Resource<>(System.currentTimeMillis(), resourceValue);
             this.pool.offer(releasedResource);
-            this.poolSize.release();
         }
     }
 

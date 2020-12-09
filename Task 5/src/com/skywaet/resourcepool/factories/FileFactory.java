@@ -27,10 +27,8 @@ public class FileFactory implements ResourceFactory<File> {
             }
         }
 
-        System.out.println("Working Directory: "+dir.getAbsolutePath());
         Integer newFileId = fileId.incrementAndGet();
-        System.out.println("New field: " +newFileId);
-        String newFileName = workingDirectory + "\\"+newFileId.toString() + ".txt";
+        String newFileName = workingDirectory + "\\" + newFileId.toString() + ".txt";
 
         return new File(newFileName);
 
